@@ -54,9 +54,11 @@
             <plugin>
                 <groupId>com.google.cloud.functions</groupId>
                 <artifactId>function-maven-plugin</artifactId>
-                <version>0.10.0</version>
+                <version>0.10.1</version>
                 <configuration>
                     <functionTarget>com.github.vendigo.function.MainFunction</functionTarget>
+                    <deploy.name>spyfall-bot</deploy.name>
+                    <deploy.runtime>java17</deploy.runtime>
                 </configuration>
             </plugin>
         </plugins>

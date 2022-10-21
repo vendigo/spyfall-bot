@@ -1,4 +1,6 @@
 package com.github.vendigo.model;
 
-public record GlobalConfig(String helloMessage, String availableLocations) {
+import java.util.List;
+
+public record GlobalConfig(String helloSingle, String helloGroup, String letsRollCall, List<String> availableLocations) {
 }

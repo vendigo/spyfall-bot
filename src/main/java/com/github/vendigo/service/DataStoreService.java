@@ -6,6 +6,9 @@ import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Key;
 import lombok.AllArgsConstructor;
 
+import java.util.List;
+import java.util.stream.Stream;
+
 @AllArgsConstructor
 public class DataStoreService {
 
@@ -18,8 +21,11 @@ public class DataStoreService {
                 .newKey("globalConfig");
         Entity configEntity = datastore.get(configKey);
 
-        String helloMessage = configEntity.getString("helloMessage");
-        String locations = configEntity.getString("locations");
-        return new GlobalConfig(helloMessage, locations);
+        String helloSingle = configEntity.getString("helloSingle");
+        String helloGroup = configEntity.getString("helloGroup");
+        String letsRollCall = configEntity.getString("letsRollcall");
+        List<String> locations = Stream.of(configEntity.getString("locations").split(", "))
+                .toList();
+        return new GlobalConfig(helloSingle, helloGroup, letsRollCall, locations);
     }
 }

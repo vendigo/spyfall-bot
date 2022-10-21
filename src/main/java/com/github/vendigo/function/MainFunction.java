@@ -8,6 +8,7 @@ import com.github.vendigo.handler.UpdateHandler;
 import com.google.cloud.functions.HttpFunction;
 import com.google.cloud.functions.HttpRequest;
 import com.google.cloud.functions.HttpResponse;
+import org.apache.http.entity.ContentType;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
@@ -19,13 +20,15 @@ public class MainFunction implements HttpFunction {
     private final UpdateHandler updateHandler = appContext.getUpdateHandler();
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final ObjectReader requestReader = objectMapper.readerFor(Update.class);
-    private final ObjectWriter responseWriter = objectMapper.writerFor(Update.class);
+    private final ObjectWriter responseWriter = objectMapper.writer();
 
     @Override
     public void service(HttpRequest request, HttpResponse response) throws Exception {
         Update update = requestReader.readValue(request.getReader());
         BotApiMethod<?> answer = updateHandler.handleUpdate(update);
         BufferedWriter writer = response.getWriter();
-        writer.write(responseWriter.writeValueAsString(answer));
+        String responseJson = responseWriter.writeValueAsString(answer);
+        writer.write(responseJson);
+        response.setContentType("application/json");
     }
 }

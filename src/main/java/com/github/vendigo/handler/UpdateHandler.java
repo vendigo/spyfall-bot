@@ -20,7 +20,7 @@ public class UpdateHandler {
 
         GlobalConfig globalConfig = dataStoreService.getGlobalConfig();
 
-        answer.setText(globalConfig + "\n"+ "Available locations: "+ globalConfig.availableLocations());
+        answer.setText(globalConfig.helloMessage() + "\n"+ "Available locations: "+ globalConfig.availableLocations());
         return answer;
     }
 }

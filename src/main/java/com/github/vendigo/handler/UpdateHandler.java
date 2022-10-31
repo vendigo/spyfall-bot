@@ -1,11 +1,9 @@
 package com.github.vendigo.handler;
 
-import com.github.vendigo.model.GlobalConfig;
-import com.github.vendigo.service.DataStoreService;
+import com.github.vendigo.service.SpyfallGameService;
 import lombok.AllArgsConstructor;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
@@ -13,24 +11,29 @@ import org.telegram.telegrambots.meta.api.objects.User;
 @AllArgsConstructor
 public class UpdateHandler {
 
-    private final DataStoreService dataStoreService;
+    private static final String NEW_GAME_COMMAND = "/newgame";
+
+    private final SpyfallGameService spyfallGameService;
 
     public BotApiMethod<?> handleUpdate(Update update) {
         Message message = update.getMessage();
-        SendMessage answer = new SendMessage();
-        answer.setChatId(message.getChatId().toString());
-
-        GlobalConfig globalConfig = dataStoreService.getGlobalConfig();
-        Chat chat = message.getChat();
-
-        if (chat.isGroupChat()) {
-            answer.setText(globalConfig.helloGroup());
-            return answer;
+        if (message == null || message.getText() == null) {
+            return null;
         }
 
-        String helloMessage = globalConfig.helloSingle().formatted(getUsername(message.getFrom()));
-        answer.setText(helloMessage);
-        return answer;
+        String responseTo = message.getChatId().toString();
+        String username = getUsername(message.getFrom());
+
+        if (message.getChat().isGroupChat()) {
+            if (message.getText().startsWith(NEW_GAME_COMMAND)) {
+                String response = spyfallGameService.startNewGame(message.getChatId());
+                return new SendMessage(responseTo, response);
+            }
+
+            return new SendMessage(responseTo, spyfallGameService.howToUseGroups());
+        }
+
+        return new SendMessage(responseTo, spyfallGameService.howToUse(username));
     }
 
     private static String getUsername(User user) {

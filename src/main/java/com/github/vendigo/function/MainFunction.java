@@ -25,9 +25,9 @@ public class MainFunction implements HttpFunction {
     public void service(HttpRequest request, HttpResponse response) throws Exception {
         Update update = requestReader.readValue(request.getReader());
         BotApiMethod<?> answer = updateHandler.handleUpdate(update);
+        response.setContentType("application/json");
         BufferedWriter writer = response.getWriter();
         String responseJson = responseWriter.writeValueAsString(answer);
         writer.write(responseJson);
-        response.setContentType("application/json");
     }
 }

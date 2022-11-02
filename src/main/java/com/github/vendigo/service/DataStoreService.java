@@ -2,14 +2,13 @@ package com.github.vendigo.service;
 
 import com.github.vendigo.model.GameEntity;
 import com.github.vendigo.model.GlobalConfig;
-import com.google.cloud.datastore.Datastore;
-import com.google.cloud.datastore.Entity;
-import com.google.cloud.datastore.Key;
+import com.google.cloud.datastore.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Slf4j
@@ -24,19 +23,61 @@ public class DataStoreService {
                 .newKey("globalConfig");
         Entity configEntity = datastore.get(configKey);
 
+        String newGame = configEntity.getString("newGame");
         String gameStarted = configEntity.getString("gameStarted");
         String howToUse = configEntity.getString("howToUse");
         String howToUseGroup = configEntity.getString("howToUseGroup");
-        List<String> locations = Stream.of(configEntity.getString("locations").split(", "))
+        String gameNotStarted = configEntity.getString("gameNotStarted");
+        String gameNotFound = configEntity.getString("gameNotFound");
+        String playerAdded = configEntity.getString("playerAdded");
+        List<String> locations = configEntity.<Value<String>>getList("locations").stream()
+                .map(Value::get)
                 .toList();
-        return new GlobalConfig(gameStarted, howToUse, howToUseGroup, locations);
+        return new GlobalConfig(newGame, gameStarted, howToUse, howToUseGroup, gameNotStarted, gameNotFound,
+                playerAdded, locations);
     }
 
-    public Long getLastGameId(Long chatId) {
-        return 1L;
+    public Optional<GameEntity> findGame(Long chatId) {
+        Key configKey = datastore.newKeyFactory()
+                .setNamespace("spyfall")
+                .setKind("Game")
+                .newKey(chatId);
+        Entity gameEntity = datastore.get(configKey);
+        if (gameEntity == null) {
+            return Optional.empty();
+        }
+
+        var game = new GameEntity(
+                chatId,
+                gameEntity.getLong("gameId"),
+                gameEntity.<Value<String>>getList("locations").stream().map(Value::get).toList(),
+                gameEntity.getTimestamp("creationTime"),
+                gameEntity.getString("gameState"),
+                gameEntity.<Value<Long>>getList("players").stream().map(Value::get).collect(Collectors.toSet())
+        );
+        return Optional.of(game);
     }
 
-    public void saveNewGame(GameEntity game) {
+    public void saveGame(GameEntity game) {
         log.info("Game {} for chat {} is saved", game.gameId(), game.chatId());
+        Key gameKey = datastore.newKeyFactory()
+                .setNamespace("spyfall")
+                .setKind("Game")
+                .newKey(game.chatId());
+
+        List<StringValue> locations = game.locations().stream()
+                .map(StringValue::of)
+                .toList();
+        List<LongValue> players = game.players().stream()
+                .map(LongValue::of)
+                .toList();
+        Entity gameEntity = Entity.newBuilder(gameKey)
+                .set("gameId", game.gameId())
+                .set("locations", ListValue.of(locations))
+                .set("creationTime", TimestampValue.of(game.creationTime()))
+                .set("gameState", game.gameState())
+                .set("players", players)
+                .build();
+        datastore.put(gameEntity);
     }
 }

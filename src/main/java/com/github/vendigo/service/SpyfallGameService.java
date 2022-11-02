@@ -5,7 +5,9 @@ import com.github.vendigo.model.GameEntity;
 import com.github.vendigo.model.GlobalConfig;
 import com.google.cloud.Timestamp;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.User;
 
@@ -21,6 +23,7 @@ public class SpyfallGameService {
 
     private final GlobalConfig config;
     private final DataStoreService dataStoreService;
+    private final MessageSendingService messageSendingService;
 
     public String createNewGame(Message message) {
         Long chatId = message.getChatId();
@@ -71,14 +74,38 @@ public class SpyfallGameService {
         Long chatId = message.getChatId();
         GameEntity game = dataStoreService.findGame(chatId)
                 .orElseThrow(() -> new GameFlowException(config.gameNotFound()));
+        if (STARTED_GAME_STATE.equals(game.gameState())) {
+            throw new GameFlowException(config.gameAlreadyStarted());
+        }
+
         GameEntity startedGame = game.withState(STARTED_GAME_STATE);
         dataStoreService.saveGame(startedGame);
+        sendRoles(startedGame);
 
         log.info("Started game in chat {}", chatId);
         return config.gameStarted().formatted(game.gameId(), game.locations());
     }
 
+    @SneakyThrows
+    private void sendRoles(GameEntity game) {
+        Set<Long> players = game.players();
+        String randomLocation = randomElement(game.locations());
+        Long spyId = randomElement(players);
+
+        for (Long playerId : players) {
+            String message = playerId.equals(spyId) ? config.playerSpy().formatted(game.gameId()) :
+                    config.playerLocation().formatted(game.gameId(), randomLocation);
+            messageSendingService.execute(new SendMessage(playerId.toString(), message));
+        }
+    }
+
     private static String getUsername(User user) {
         return user.getUserName() == null ? user.getFirstName() : user.getUserName();
+    }
+
+    private static <T> T randomElement(Collection<T> collection) {
+        List<T> list = List.copyOf(collection);
+        int randomIndex = new Random().nextInt(list.size());
+        return list.get(randomIndex);
     }
 }

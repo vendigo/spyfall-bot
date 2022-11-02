@@ -8,6 +8,9 @@ public record GlobalConfig(String newGame,
                            String howToUseGroup,
                            String gameNotStarted,
                            String gameNotFound,
+                           String gameAlreadyStarted,
                            String playerAdded,
+                           String playerLocation,
+                           String playerSpy,
                            List<String> locations) {
 }

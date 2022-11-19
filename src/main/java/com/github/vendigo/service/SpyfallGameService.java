@@ -70,12 +70,16 @@ public class SpyfallGameService {
         return config.playerAdded().formatted(getUsername(from));
     }
 
-    public String startNewGame(Message message) {
+    public String startNewGame(Message message, boolean forceStart) {
         Long chatId = message.getChatId();
         GameEntity game = dataStoreService.findGame(chatId)
                 .orElseThrow(() -> new GameFlowException(config.gameNotFound()));
         if (STARTED_GAME_STATE.equals(game.gameState())) {
             throw new GameFlowException(config.gameAlreadyStarted());
+        }
+
+        if (!forceStart && game.players().size() < 3) {
+            return config.notEnoughPlayers();
         }
 
         GameEntity startedGame = game.withState(STARTED_GAME_STATE);

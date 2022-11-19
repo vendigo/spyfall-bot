@@ -2,20 +2,32 @@ package com.github.vendigo.handler;
 
 import com.github.vendigo.exception.GameFlowException;
 import com.github.vendigo.service.SpyfallGameService;
+import com.google.common.collect.ImmutableMap;
 import lombok.AllArgsConstructor;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.util.Map;
+import java.util.function.Function;
+
 @AllArgsConstructor
 public class UpdateHandler {
 
     private static final String NEW_GAME_COMMAND = "/newgame";
     private static final String START_GAME_COMMAND = "/start";
+    private static final String FORCE_START_GAME_COMMAND = "/force-start";
     private static final String IN_COMMAND = "/in";
 
     private final SpyfallGameService spyfallGameService;
+    private final Map<String, Function<Message, String>> COMMAND_STRATEGIES = ImmutableMap
+            .<String, Function<Message, String>>builder()
+            .put(NEW_GAME_COMMAND, spyfallGameService::createNewGame)
+            .put(IN_COMMAND, spyfallGameService::addPlayer)
+            .put(START_GAME_COMMAND, message -> spyfallGameService.startNewGame(message, false))
+            .put(FORCE_START_GAME_COMMAND, message -> spyfallGameService.startNewGame(message, false))
+            .build();
 
     public BotApiMethod<?> handleUpdate(Update update) {
         Message message = update.getMessage();
@@ -23,31 +35,30 @@ public class UpdateHandler {
             return null;
         }
 
-        String responseTo = message.getChatId().toString();
+        return new SendMessage(message.getChatId().toString(), processMessage(message));
+    }
 
-        if (message.getChat().isGroupChat()) {
-            try {
-                if (message.getText().startsWith(NEW_GAME_COMMAND)) {
-                    String response = spyfallGameService.createNewGame(message);
-                    return new SendMessage(responseTo, response);
-                }
-
-                if (message.getText().startsWith(IN_COMMAND)) {
-                    String response = spyfallGameService.addPlayer(message);
-                    return new SendMessage(responseTo, response);
-                }
-
-                if (message.getText().startsWith(START_GAME_COMMAND)) {
-                    String response = spyfallGameService.startNewGame(message);
-                    return new SendMessage(responseTo, response);
-                }
-            } catch (GameFlowException ex) {
-                return new SendMessage(responseTo, ex.getMessage());
-            }
-
-            return new SendMessage(responseTo, spyfallGameService.howToUseGroups(message));
+    private String processMessage(Message message) {
+        if (!message.getChat().isGroupChat()) {
+            return spyfallGameService.howToUse(message);
         }
 
-        return new SendMessage(responseTo, spyfallGameService.howToUse(message));
+        try {
+            return processCommand(message);
+        } catch (GameFlowException ex) {
+            return ex.getMessage();
+        }
+    }
+
+    private String processCommand(Message message) {
+        String messageText = message.getText();
+
+        for (var entry : COMMAND_STRATEGIES.entrySet()) {
+            if (messageText.startsWith(entry.getKey())) {
+                return entry.getValue().apply(message);
+            }
+        }
+
+        return spyfallGameService.howToUseGroups(message);
     }
 }

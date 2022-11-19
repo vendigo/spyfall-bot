@@ -33,11 +33,12 @@ public class DataStoreService {
         String playerAdded = configEntity.getString("playerAdded");
         String playerLocation = configEntity.getString("playerLocation");
         String playerSpy = configEntity.getString("playerSpy");
+        String notEnoughPlayers = configEntity.getString("notEnoughPlayers");
         List<String> locations = configEntity.<Value<String>>getList("locations").stream()
                 .map(Value::get)
                 .toList();
         return new GlobalConfig(newGame, gameStarted, howToUse, howToUseGroup, gameNotStarted, gameNotFound,
-                gameAlreadyStarted, playerAdded, playerLocation, playerSpy, locations);
+                gameAlreadyStarted, playerAdded, playerLocation, playerSpy, notEnoughPlayers, locations);
     }
 
     public Optional<GameEntity> findGame(Long chatId) {

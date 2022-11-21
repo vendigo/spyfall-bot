@@ -29,7 +29,7 @@ public class UpdateHandler {
             .put(NEW_GAME_COMMAND, spyfallGameService::createNewGame)
             .put(IN_COMMAND, spyfallGameService::addPlayer)
             .put(START_GAME_COMMAND, message -> spyfallGameService.startNewGame(message, false))
-            .put(FORCE_START_GAME_COMMAND, message -> spyfallGameService.startNewGame(message, false))
+            .put(FORCE_START_GAME_COMMAND, message -> spyfallGameService.startNewGame(message, true))
             .put(RULES_COMMAND, spyfallGameService::getRules)
             .build();
     }

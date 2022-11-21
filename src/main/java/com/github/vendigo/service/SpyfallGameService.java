@@ -51,8 +51,7 @@ public class SpyfallGameService {
             throw new GameFlowException(config.gameNotStarted());
         }
 
-        List<String> locations = choseLocations();
-        var gameEntity = new GameEntity(chatId, gameId, locations, Timestamp.now(), NEW_GAME_STATE, Set.of());
+        var gameEntity = new GameEntity(chatId, gameId, Timestamp.now(), NEW_GAME_STATE, Set.of());
         dataStoreService.saveGame(gameEntity);
         return config.newGame();
     }
@@ -65,16 +64,9 @@ public class SpyfallGameService {
         return config.howToUseGroup();
     }
 
-    private List<String> choseLocations() {
-        var allLocations = new ArrayList<>(config.locations());
-        Collections.shuffle(allLocations);
-        return allLocations.subList(0, LOCATIONS_PER_GAME);
-    }
-
     public String addPlayer(Message message) {
         Long chatId = message.getChatId();
-        GameEntity game = dataStoreService.findGame(chatId)
-            .orElseThrow(() -> new GameFlowException(config.gameNotFound()));
+        GameEntity game = findNewGame(chatId);
 
         User from = message.getFrom();
         Long playerId = from.getId();
@@ -86,11 +78,7 @@ public class SpyfallGameService {
 
     public String startNewGame(Message message, boolean forceStart) {
         Long chatId = message.getChatId();
-        GameEntity game = dataStoreService.findGame(chatId)
-            .orElseThrow(() -> new GameFlowException(config.gameNotFound()));
-        if (STARTED_GAME_STATE.equals(game.gameState())) {
-            throw new GameFlowException(config.gameAlreadyStarted());
-        }
+        GameEntity game = findNewGame(chatId);
 
         if (!forceStart && game.players().size() < MIN_PLAYERS) {
             return config.notEnoughPlayers();
@@ -98,27 +86,43 @@ public class SpyfallGameService {
 
         GameEntity startedGame = game.withState(STARTED_GAME_STATE);
         dataStoreService.saveGame(startedGame);
-        sendRoles(startedGame);
+        List<String> locations = choseLocations();
+        sendRoles(startedGame, locations);
 
         log.info("Started game in chat {}", chatId);
-        return formatGameStartedMessage(game);
-    }
-
-    private String formatGameStartedMessage(GameEntity game) {
-        String locations = game.locations().stream()
-            .map(LIST_EL_TEMPLATE::formatted)
-            .collect(Collectors.joining());
-        return config.gameStarted().formatted(game.gameId(), locations);
+        return formatGameStartedMessage(game, locations);
     }
 
     public String getRules(Message message) {
         return config.rules();
     }
 
+    private String formatGameStartedMessage(GameEntity game, List<String> locations) {
+        String locationsJoined = locations.stream()
+            .map(LIST_EL_TEMPLATE::formatted)
+            .collect(Collectors.joining());
+        return config.gameStarted().formatted(game.gameId(), locationsJoined);
+    }
+
+    private List<String> choseLocations() {
+        var allLocations = new ArrayList<>(config.locations());
+        Collections.shuffle(allLocations);
+        return allLocations.subList(0, LOCATIONS_PER_GAME);
+    }
+
+    private GameEntity findNewGame(Long chatId) {
+        GameEntity game = dataStoreService.findGame(chatId)
+            .orElseThrow(() -> new GameFlowException(config.gameNotFound()));
+        if (STARTED_GAME_STATE.equals(game.gameState())) {
+            throw new GameFlowException(config.gameAlreadyStarted());
+        }
+        return game;
+    }
+
     @SneakyThrows
-    private void sendRoles(GameEntity game) {
+    private void sendRoles(GameEntity game, List<String> locations) {
         Set<Long> players = game.players();
-        String randomLocation = randomElement(game.locations());
+        String randomLocation = randomElement(locations);
         Long spyId = randomElement(players);
 
         for (Long playerId : players) {

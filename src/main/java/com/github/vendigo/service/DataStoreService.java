@@ -1,16 +1,22 @@
 package com.github.vendigo.service;
 
-import com.github.vendigo.model.GameEntity;
-import com.github.vendigo.model.GlobalConfig;
-import com.google.cloud.datastore.*;
-
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import com.github.vendigo.model.GameEntity;
+import com.github.vendigo.model.GlobalConfig;
+import com.google.cloud.datastore.Datastore;
+import com.google.cloud.datastore.Entity;
+import com.google.cloud.datastore.Key;
+import com.google.cloud.datastore.KeyFactory;
+import com.google.cloud.datastore.LongValue;
+import com.google.cloud.datastore.TimestampValue;
+import com.google.cloud.datastore.Value;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @AllArgsConstructor
 @Slf4j
@@ -18,7 +24,6 @@ public class DataStoreService {
 
     private static final String CONFIG_KIND = "Config";
     private static final String GAME_KIND = "Game";
-    private static final String LOCATIONS = "locations";
     private static final String GAME_ID = "gameId";
     private static final String CREATION_TIME = "creationTime";
     private static final String GAME_STATE = "gameState";
@@ -60,7 +65,6 @@ public class DataStoreService {
         return Optional.of(new GameEntity(
             chatId,
             gameEntity.getLong(GAME_ID),
-            parseLocations(gameEntity),
             gameEntity.getTimestamp(CREATION_TIME),
             gameEntity.getString(GAME_STATE),
             parsePlayers(gameEntity)
@@ -80,15 +84,11 @@ public class DataStoreService {
             .setKind(GAME_KIND)
             .newKey(game.chatId());
 
-        List<StringValue> locations = game.locations().stream()
-            .map(StringValue::of)
-            .toList();
         List<LongValue> players = game.players().stream()
             .map(LongValue::of)
             .toList();
         Entity gameEntity = Entity.newBuilder(gameKey)
             .set(GAME_ID, game.gameId())
-            .set(LOCATIONS, ListValue.of(locations))
             .set(CREATION_TIME, TimestampValue.of(game.creationTime()))
             .set(GAME_STATE, game.gameState())
             .set(PLAYERS, players)
@@ -97,7 +97,7 @@ public class DataStoreService {
     }
 
     private List<String> parseLocations(Entity entity) {
-        return entity.<Value<String>>getList(LOCATIONS)
+        return entity.<Value<String>>getList("locations")
             .stream()
             .map(Value::get)
             .toList();

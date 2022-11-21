@@ -11,9 +11,6 @@ import com.github.vendigo.exception.GameFlowException;
 import com.github.vendigo.service.SpyfallGameService;
 import com.google.common.collect.ImmutableMap;
 
-import lombok.AllArgsConstructor;
-
-@AllArgsConstructor
 public class UpdateHandler {
 
     private static final String NEW_GAME_COMMAND = "/newgame";
@@ -23,14 +20,19 @@ public class UpdateHandler {
     private static final String RULES_COMMAND = "/rules";
 
     private final SpyfallGameService spyfallGameService;
-    private final Map<String, Function<Message, String>> commandStrategies = ImmutableMap
-        .<String, Function<Message, String>>builder()
-        .put(NEW_GAME_COMMAND, spyfallGameService::createNewGame)
-        .put(IN_COMMAND, spyfallGameService::addPlayer)
-        .put(START_GAME_COMMAND, message -> spyfallGameService.startNewGame(message, false))
-        .put(FORCE_START_GAME_COMMAND, message -> spyfallGameService.startNewGame(message, false))
-        .put(RULES_COMMAND, spyfallGameService::getRules)
-        .build();
+    private final Map<String, Function<Message, String>> commandStrategies;
+
+    public UpdateHandler(SpyfallGameService spyfallGameService) {
+        this.spyfallGameService = spyfallGameService;
+        this.commandStrategies = ImmutableMap
+            .<String, Function<Message, String>>builder()
+            .put(NEW_GAME_COMMAND, spyfallGameService::createNewGame)
+            .put(IN_COMMAND, spyfallGameService::addPlayer)
+            .put(START_GAME_COMMAND, message -> spyfallGameService.startNewGame(message, false))
+            .put(FORCE_START_GAME_COMMAND, message -> spyfallGameService.startNewGame(message, false))
+            .put(RULES_COMMAND, spyfallGameService::getRules)
+            .build();
+    }
 
     public SendMessage handleUpdate(Update update) {
         Message message = update.getMessage();

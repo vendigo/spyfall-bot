@@ -15,7 +15,7 @@ public class UpdateHandler {
 
     private static final String NEW_GAME_COMMAND = "/newgame";
     private static final String START_GAME_COMMAND = "/start";
-    private static final String FORCE_START_GAME_COMMAND = "/force-start";
+    private static final String FORCE_START_GAME_COMMAND = "/forcestart";
     private static final String IN_COMMAND = "/in";
     private static final String RULES_COMMAND = "/rules";
 

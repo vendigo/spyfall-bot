@@ -28,7 +28,7 @@ public class SpyfallGameService {
 
     private static final String NEW_GAME_STATE = "NEW_GAME";
     private static final String STARTED_GAME_STATE = "STARTED_GAME";
-    private static final int LOCATIONS_PER_GAME = 10;
+    private static final int LOCATIONS_PER_GAME = 30;
     private static final Random RANDOM = new Random();
     private static final int MIN_PLAYERS = 3;
     private static final long DEFAULT_GAME_ID = 1L;

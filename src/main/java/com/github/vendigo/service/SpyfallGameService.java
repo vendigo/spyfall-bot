@@ -40,6 +40,7 @@ public class SpyfallGameService {
 
 
     public String createNewGame(Message message) {
+        log.info("[Command] Create new game");
         Long chatId = message.getChatId();
         Optional<GameEntity> game = dataStoreService.findGame(chatId);
         Long gameId = game.map(GameEntity::gameId)
@@ -57,14 +58,17 @@ public class SpyfallGameService {
     }
 
     public String howToUse(Message message) {
+        log.info("[Command] How to use");
         return config.howToUse();
     }
 
     public String howToUseGroups(Message message) {
+        log.info("[Command] How to use groups");
         return config.howToUseGroup();
     }
 
     public String addPlayer(Message message) {
+        log.info("[Command] Add player");
         Long chatId = message.getChatId();
         GameEntity game = findNewGame(chatId);
 
@@ -77,6 +81,7 @@ public class SpyfallGameService {
     }
 
     public String startNewGame(Message message, boolean forceStart) {
+        log.info("[Command] Start new game");
         Long chatId = message.getChatId();
         GameEntity game = findNewGame(chatId);
 
@@ -84,16 +89,17 @@ public class SpyfallGameService {
             return config.notEnoughPlayers();
         }
 
+        List<String> locations = choseLocations();
+        sendRoles(game, locations);
         GameEntity startedGame = game.withState(STARTED_GAME_STATE);
         dataStoreService.saveGame(startedGame);
-        List<String> locations = choseLocations();
-        sendRoles(startedGame, locations);
 
         log.info("Started game in chat {}", chatId);
         return formatGameStartedMessage(game, locations);
     }
 
     public String getRules(Message message) {
+        log.info("[Command] Get rules");
         return config.rules();
     }
 

@@ -14,5 +14,6 @@ public record GlobalConfig(String newGame,
                            String playerSpy,
                            String notEnoughPlayers,
                            String rules,
+                           String unknownError,
                            List<String> locations) {
 }

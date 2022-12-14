@@ -17,6 +17,6 @@ public class AppContext {
     private final DataStoreService dataStoreService = new DataStoreService(dataStore);
     private final GlobalConfig config = dataStoreService.getGlobalConfig();
     private final SpyfallGameService spyfallGameService = new SpyfallGameService(config, dataStoreService, messageSendingService);
-    private final UpdateHandler updateHandler = new UpdateHandler(spyfallGameService);
+    private final UpdateHandler updateHandler = new UpdateHandler(spyfallGameService, config);
 
 }

@@ -3,6 +3,7 @@ package com.github.vendigo.handler;
 import java.util.Map;
 import java.util.function.Function;
 
+import com.github.vendigo.model.GlobalConfig;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -21,9 +22,11 @@ public class UpdateHandler {
 
     private final SpyfallGameService spyfallGameService;
     private final Map<String, Function<Message, String>> commandStrategies;
+    private final GlobalConfig config;
 
-    public UpdateHandler(SpyfallGameService spyfallGameService) {
+    public UpdateHandler(SpyfallGameService spyfallGameService, GlobalConfig config) {
         this.spyfallGameService = spyfallGameService;
+        this.config = config;
         this.commandStrategies = ImmutableMap
             .<String, Function<Message, String>>builder()
             .put(NEW_GAME_COMMAND, spyfallGameService::createNewGame)
@@ -52,6 +55,8 @@ public class UpdateHandler {
             return processCommand(message);
         } catch (GameFlowException ex) {
             return ex.getMessage();
+        } catch (Exception ex) {
+            return config.unknownError();
         }
     }
 

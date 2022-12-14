@@ -50,6 +50,7 @@ public class DataStoreService {
             e.getString("playerSpy"),
             e.getString("notEnoughPlayers"),
             e.getString("rules"),
+            e.getString("unknownError"),
             parseLocations(e));
     }
 

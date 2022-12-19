@@ -42,7 +42,6 @@ public class DataStoreService {
             e.getString("gameStarted"),
             e.getString("howToUse"),
             e.getString("howToUseGroup"),
-            e.getString("gameNotStarted"),
             e.getString("gameNotFound"),
             e.getString("gameAlreadyStarted"),
             e.getString("playerAdded"),
@@ -51,6 +50,7 @@ public class DataStoreService {
             e.getString("notEnoughPlayers"),
             e.getString("rules"),
             e.getString("unknownError"),
+            e.getString("cantStartChat"),
             parseLocations(e));
     }
 

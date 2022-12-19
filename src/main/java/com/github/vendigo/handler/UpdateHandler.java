@@ -1,16 +1,17 @@
 package com.github.vendigo.handler;
 
-import java.util.Map;
-import java.util.function.Function;
-
+import com.github.vendigo.exception.GameFlowException;
 import com.github.vendigo.model.GlobalConfig;
+import com.github.vendigo.service.SpyfallGameService;
+import com.google.api.client.http.HttpStatusCodes;
+import com.google.common.collect.ImmutableMap;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
-import com.github.vendigo.exception.GameFlowException;
-import com.github.vendigo.service.SpyfallGameService;
-import com.google.common.collect.ImmutableMap;
+import java.util.Map;
+import java.util.function.Function;
 
 public class UpdateHandler {
 
@@ -28,13 +29,13 @@ public class UpdateHandler {
         this.spyfallGameService = spyfallGameService;
         this.config = config;
         this.commandStrategies = ImmutableMap
-            .<String, Function<Message, String>>builder()
-            .put(NEW_GAME_COMMAND, spyfallGameService::createNewGame)
-            .put(IN_COMMAND, spyfallGameService::addPlayer)
-            .put(START_GAME_COMMAND, message -> spyfallGameService.startNewGame(message, false))
-            .put(FORCE_START_GAME_COMMAND, message -> spyfallGameService.startNewGame(message, true))
-            .put(RULES_COMMAND, spyfallGameService::getRules)
-            .build();
+                .<String, Function<Message, String>>builder()
+                .put(NEW_GAME_COMMAND, spyfallGameService::createNewGame)
+                .put(IN_COMMAND, spyfallGameService::addPlayer)
+                .put(START_GAME_COMMAND, message -> spyfallGameService.startNewGame(message, false))
+                .put(FORCE_START_GAME_COMMAND, message -> spyfallGameService.startNewGame(message, true))
+                .put(RULES_COMMAND, spyfallGameService::getRules)
+                .build();
     }
 
     public SendMessage handleUpdate(Update update) {
@@ -53,11 +54,21 @@ public class UpdateHandler {
 
         try {
             return processCommand(message);
-        } catch (GameFlowException ex) {
-            return ex.getMessage();
         } catch (Exception ex) {
-            return config.unknownError();
+            return processException(ex);
         }
+    }
+
+    private String processException(Exception ex) {
+        if (ex instanceof GameFlowException) {
+            return ex.getMessage();
+        }
+        if (ex instanceof TelegramApiRequestException apiRequestException
+                && apiRequestException.getErrorCode() == HttpStatusCodes.STATUS_CODE_FORBIDDEN) {
+            return config.cantStartChat();
+        }
+        ex.printStackTrace();
+        return config.unknownError();
     }
 
     private String processCommand(Message message) {

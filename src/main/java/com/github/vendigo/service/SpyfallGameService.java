@@ -48,10 +48,6 @@ public class SpyfallGameService {
         String lastGameState = game.map(GameEntity::gameState)
             .orElse(STARTED_GAME_STATE);
 
-        if (NEW_GAME_STATE.equals(lastGameState)) {
-            throw new GameFlowException(config.gameNotStarted());
-        }
-
         var gameEntity = new GameEntity(chatId, gameId, Timestamp.now(), NEW_GAME_STATE, Set.of());
         dataStoreService.saveGame(gameEntity);
         return config.newGame();

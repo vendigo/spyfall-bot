@@ -28,7 +28,6 @@ public class SpyfallGameService {
 
     private static final String NEW_GAME_STATE = "NEW_GAME";
     private static final String STARTED_GAME_STATE = "STARTED_GAME";
-    private static final int LOCATIONS_PER_GAME = 30;
     private static final Random RANDOM = new Random();
     private static final int MIN_PLAYERS = 3;
     private static final long DEFAULT_GAME_ID = 1L;
@@ -45,10 +44,8 @@ public class SpyfallGameService {
         Optional<GameEntity> game = dataStoreService.findGame(chatId);
         Long gameId = game.map(GameEntity::gameId)
             .orElse(DEFAULT_GAME_ID);
-        String lastGameState = game.map(GameEntity::gameState)
-            .orElse(STARTED_GAME_STATE);
 
-        var gameEntity = new GameEntity(chatId, gameId, Timestamp.now(), NEW_GAME_STATE, Set.of());
+        var gameEntity = new GameEntity(chatId, gameId + 1, Timestamp.now(), NEW_GAME_STATE, Set.of());
         dataStoreService.saveGame(gameEntity);
         return config.newGame();
     }
@@ -109,7 +106,7 @@ public class SpyfallGameService {
     private List<String> choseLocations() {
         var allLocations = new ArrayList<>(config.locations());
         Collections.shuffle(allLocations);
-        return allLocations.subList(0, LOCATIONS_PER_GAME);
+        return allLocations.subList(0, config.locationsPerGame());
     }
 
     private GameEntity findNewGame(Long chatId) {

@@ -1,302 +1,102 @@
 {
-  "properties": {
-    "cantStartChat": {
-      "stringValue": "Please, make sure, that you started direct messaging with me. This is necessary so that I can send you a message"
-    },
-    "gameAlreadyStarted": {
-      "stringValue": "Game already started. Create new: /newgame"
-    },
-    "gameNotFound": {
-      "stringValue": "Game not found. Create new: /newgame"
-    },
-    "gameStarted": {
-      "stringValue": "Game #%d started. Locations:\n%s"
-    },
-    "howToUse": {
-      "stringValue": "To play a game add me to a group chat and send command /newgame"
-    },
-    "howToUseGroup": {
-      "stringValue": "To create new game send command /newgame. When all players will send /in command, start game by sending /start"
-    },
-    "newGame": {
-      "stringValue": "Everyone who plays write to chat /in. Next, someone start a game with command /start. Make sure, that you started private chat with me."
-    },
-    "notEnoughPlayers": {
-      "stringValue": "At least 3 players are needed for the game. Send /in if you want to join."
-    },
-    "playerAdded": {
-      "stringValue": "Added player: %s"
-    },
-    "playerLocation": {
-      "stringValue": "Game #%d. Your location: %s"
-    },
-    "playerSpy": {
-      "stringValue": "Game #%d. Your are spy"
-    },
-    "rules": {
-      "stringValue": "Ask each other questions to find a spy. Spy should understand where he is located"
-    },
-    "unknownError": {
-      "stringValue": "Unknown error occurred."
-    },
-    "locations": {
-      "values": [
-        {
-          "stringValue": "Terrorist base"
-        },
-        {
-          "stringValue": "Bank"
-        },
-        {
-          "stringValue": "Hospital"
-        },
-        {
-          "stringValue": "Military base"
-        },
-        {
-          "stringValue": "Crusader army"
-        },
-        {
-          "stringValue": "Casino"
-        },
-        {
-          "stringValue": "Film studio"
-        },
-        {
-          "stringValue": "Corporate party"
-        },
-        {
-          "stringValue": "Vegetable base"
-        },
-        {
-          "stringValue": "Ocean liner"
-        },
-        {
-          "stringValue": "Orbital station"
-        },
-        {
-          "stringValue": "Hotel"
-        },
-        {
-          "stringValue": "Guerrilla unit"
-        },
-        {
-          "stringValue": "Passenger train"
-        },
-        {
-          "stringValue": "Pirate ship"
-        },
-        {
-          "stringValue": "Beach"
-        },
-        {
-          "stringValue": "Submarine"
-        },
-        {
-          "stringValue": "Police station"
-        },
-        {
-          "stringValue": "Polar station"
-        },
-        {
-          "stringValue": "Embassy"
-        },
-        {
-          "stringValue": "Restaurant"
-        },
-        {
-          "stringValue": "Plane"
-        },
-        {
-          "stringValue": "Spa salon"
-        },
-        {
-          "stringValue": "Technical station service"
-        },
-        {
-          "stringValue": "Supermarket"
-        },
-        {
-          "stringValue": "Theater"
-        },
-        {
-          "stringValue": "University"
-        },
-        {
-          "stringValue": "Church"
-        },
-        {
-          "stringValue": "Circus"
-        },
-        {
-          "stringValue": "School"
-        },
-        {
-          "stringValue": "Construction site"
-        },
-        {
-          "stringValue": "Subway"
-        },
-        {
-          "stringValue": "Senate"
-        },
-        {
-          "stringValue": "Chocolate Factory"
-        },
-        {
-          "stringValue": "Cemetery"
-        },
-        {
-          "stringValue": "Stadium"
-        },
-        {
-          "stringValue": "Museum"
-        },
-        {
-          "stringValue": "Nursing home"
-        },
-        {
-          "stringValue": "Jazz band"
-        },
-        {
-          "stringValue": "Vineyard"
-        },
-        {
-          "stringValue": "Excursion bus"
-        },
-        {
-          "stringValue": "Rock concert"
-        },
-        {
-          "stringValue": "Mine"
-        },
-        {
-          "stringValue": "Port"
-        },
-        {
-          "stringValue": "Motor racing"
-        },
-        {
-          "stringValue": "Wedding"
-        },
-        {
-          "stringValue": "Gas station"
-        },
-        {
-          "stringValue": "Library"
-        },
-        {
-          "stringValue": "Prison"
-        },
-        {
-          "stringValue": "Exhibition of cats"
-        },
-        {
-          "stringValue": "Carnival"
-        },
-        {
-          "stringValue": "Exhibition of board games"
-        },
-        {
-          "stringValue": "Zoo"
-        },
-        {
-          "stringValue": "Amusement Park"
-        },
-        {
-          "stringValue": "Hockey arena"
-        },
-        {
-          "stringValue": "Hippie festival"
-        },
-        {
-          "stringValue": "Circle of Druids"
-        },
-        {
-          "stringValue": "Caravan"
-        },
-        {
-          "stringValue": "Viking boat"
-        },
-        {
-          "stringValue": "Spanish Inquisition"
-        },
-        {
-          "stringValue": "Neanderthal cave"
-        },
-        {
-          "stringValue": "Construction of pyramids"
-        },
-        {
-          "stringValue": "Trojan War"
-        },
-        {
-          "stringValue": "Rebel camp"
-        },
-        {
-          "stringValue": "Ancient Olympics"
-        },
-        {
-          "stringValue": "Lunar station"
-        },
-        {
-          "stringValue": "Robin Hood Squad"
-        },
-        {
-          "stringValue": "Knight tournament"
-        },
-        {
-          "stringValue": "Shaolin Monastery"
-        },
-        {
-          "stringValue": "Epidemic of the Black Death"
-        },
-        {
-          "stringValue": "Leonardo's workshop"
-        },
-        {
-          "stringValue": "Island of cannibals"
-        },
-        {
-          "stringValue": "Turkish harem"
-        },
-        {
-          "stringValue": "Ninja school"
-        },
-        {
-          "stringValue": "A company of musketeers"
-        },
-        {
-          "stringValue": "Wigwam"
-        },
-        {
-          "stringValue": "Battle of Borodino"
-        },
-        {
-          "stringValue": "Balloon"
-        },
-        {
-          "stringValue": "Ancient Roman Senate"
-        },
-        {
-          "stringValue": "The French Revolution"
-        },
-        {
-          "stringValue": "Tank battle"
-        },
-        {
-          "stringValue": "Saloon"
-        },
-        {
-          "stringValue": "Camp of gold diggers"
-        },
-        {
-          "stringValue": "Underground bar"
-        },
-        {
-          "stringValue": "Airship of the First World War"
-        }
-      ]
-    }
-  }
+  "cantStartChat": "Please, make sure, that you started direct messaging with me. This is necessary so that I can send you a message",
+  "gameAlreadyStarted": "Game already started. Create new: /newgame",
+  "gameNotFound": "Game not found. Create new: /newgame",
+  "gameStarted": "Game #%d started. Locations:\n%s",
+  "howToUse": "To play a game add me to a group chat and send command /newgame",
+  "howToUseGroup": "To create new game send command /newgame. When all players will send /in command, start game by sending /start",
+  "newGame": "Everyone who plays write to chat /in. Next, someone start a game with command /start. Make sure, that you started private chat with me.",
+  "notEnoughPlayers": "At least 3 players are needed for the game. Send /in if you want to join.",
+  "playerAdded": "Added player: %s",
+  "playerLocation": "Game #%d. Your location: %s",
+  "playerSpy": "Game #%d. Your are spy",
+  "rules": "Ask each other questions to find a spy. Spy should understand where he is located",
+  "unknownError": "Unknown error occurred.",
+  "locations": [
+    "Terrorist base",
+    "Bank",
+    "Hospital",
+    "Military base",
+    "Crusader army",
+    "Casino",
+    "Film studio",
+    "Corporate party",
+    "Vegetable base",
+    "Ocean liner",
+    "Orbital station",
+    "Hotel",
+    "Guerrilla unit",
+    "Passenger train",
+    "Pirate ship",
+    "Beach",
+    "Submarine",
+    "Police station",
+    "Polar station",
+    "Embassy",
+    "Restaurant",
+    "Plane",
+    "Spa salon",
+    "Technical station service",
+    "Supermarket",
+    "Theater",
+    "University",
+    "Church",
+    "Circus",
+    "School",
+    "Construction site",
+    "Subway",
+    "Senate",
+    "Chocolate Factory",
+    "Cemetery",
+    "Stadium",
+    "Museum",
+    "Nursing home",
+    "Jazz band",
+    "Vineyard",
+    "Excursion bus",
+    "Rock concert",
+    "Mine",
+    "Port",
+    "Motor racing",
+    "Wedding",
+    "Gas station",
+    "Library",
+    "Prison",
+    "Exhibition of cats",
+    "Carnival",
+    "Exhibition of board games",
+    "Zoo",
+    "Amusement Park",
+    "Hockey arena",
+    "Hippie festival",
+    "Circle of Druids",
+    "Caravan",
+    "Viking boat",
+    "Spanish Inquisition",
+    "Neanderthal cave",
+    "Construction of pyramids",
+    "Trojan War",
+    "Rebel camp",
+    "Ancient Olympics",
+    "Lunar station",
+    "Robin Hood Squad",
+    "Knight tournament",
+    "Shaolin Monastery",
+    "Epidemic of the Black Death",
+    "Leonardo's workshop",
+    "Island of cannibals",
+    "Turkish harem",
+    "Ninja school",
+    "A company of musketeers",
+    "Wigwam",
+    "Battle of Borodino",
+    "Balloon",
+    "Ancient Roman Senate",
+    "The French Revolution",
+    "Tank battle",
+    "Saloon",
+    "Camp of gold diggers",
+    "Underground bar",
+    "Airship of the First World War"
+  ]
 }

@@ -77,12 +77,13 @@ public class SpyfallGameService {
         log.info("[Command] Start new game");
         Long chatId = message.getChatId();
         GameEntity game = findNewGame(chatId);
+        int playersCount = game.players().size();
 
-        if (!forceStart && game.players().size() < MIN_PLAYERS) {
+        if (!forceStart && playersCount < MIN_PLAYERS) {
             return config.notEnoughPlayers();
         }
 
-        List<String> locations = choseLocations();
+        List<String> locations = choseLocations(playersCount);
         sendRoles(game, locations);
         GameEntity startedGame = game.withState(STARTED_GAME_STATE);
         dataStoreService.saveGame(startedGame);
@@ -103,10 +104,10 @@ public class SpyfallGameService {
         return config.gameStarted().formatted(game.gameId(), locationsJoined);
     }
 
-    private List<String> choseLocations() {
+    private List<String> choseLocations(int playersCount) {
         var allLocations = new ArrayList<>(config.locations());
         Collections.shuffle(allLocations);
-        return allLocations.subList(0, config.locationsPerGame());
+        return allLocations.subList(0, getLocationsPerGame(playersCount));
     }
 
     private GameEntity findNewGame(Long chatId) {
@@ -139,5 +140,9 @@ public class SpyfallGameService {
         List<T> list = List.copyOf(collection);
         int randomIndex = RANDOM.nextInt(list.size());
         return list.get(randomIndex);
+    }
+
+    private static int getLocationsPerGame(int playersCount) {
+        return playersCount < 5 ? 20 : 30;
     }
 }

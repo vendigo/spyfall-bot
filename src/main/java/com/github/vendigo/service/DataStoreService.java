@@ -44,7 +44,6 @@ public class DataStoreService {
                 e.getString("rules"),
                 e.getString("unknownError"),
                 e.getString("cantStartChat"),
-                (int) e.getLong("locationsPerGame"),
                 parseLocations(e));
     }
 

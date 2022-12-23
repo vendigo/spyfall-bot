@@ -1,0 +1,302 @@
+{
+  "properties": {
+    "cantStartChat": {
+      "stringValue": "Будь ласка, всі переконайтеся, що почали приватну переписку зі мною. Це необхідно для того, щоб я міг відправити вам приватне повідомлення"
+    },
+    "gameAlreadyStarted": {
+      "stringValue": "Гра вже стартувала. Створіть нову: /newgame"
+    },
+    "gameNotFound": {
+      "stringValue": "Спочатку створіть нову гру. /newgame"
+    },
+    "gameStarted": {
+      "stringValue": "Гра №%d почалась. Локації:\n%s\nРоль кожного гравця я відправив в особисті повідомлення."
+    },
+    "howToUse": {
+      "stringValue": "Щоб зіграти, додайте мене в груповий чат та відправте команду /newgame"
+    },
+    "howToUseGroup": {
+      "stringValue": "Щоб створити нову гру, відправте команду /newgame. Коли всі гравці напишуть /in, стартуйте гру командою /start"
+    },
+    "newGame": {
+      "stringValue": "Всі, хто грають, напишіть в чат /in. Далі, щоб почати гру, хтось один нехай стартує її командою /start. Переконайтеся, що ви почали приватну переписку зі мною."
+    },
+    "notEnoughPlayers": {
+      "stringValue": "Для гри необхідно мінімум три гравці. Хто хоче приєднатися, напишіть в чат /in"
+    },
+    "playerAdded": {
+      "stringValue": "Додано гравця: %s"
+    },
+    "playerLocation": {
+      "stringValue": "Гра №%d.\nВаша локація: %s"
+    },
+    "playerSpy": {
+      "stringValue": "Гра №%d.\nВи шпигун"
+    },
+    "rules": {
+      "stringValue": "Задавайте питання один одному, щоб вирахувати хто шпигун. Шпигун, має здогадатися де він знаходиться"
+    },
+    "unknownError": {
+      "stringValue": "Сталася невідома помилка."
+    },
+    "locations": {
+      "values": [
+        {
+          "stringValue": "База терористів"
+        },
+        {
+          "stringValue": "Банк"
+        },
+        {
+          "stringValue": "Лікарня"
+        },
+        {
+          "stringValue": "Військова частина"
+        },
+        {
+          "stringValue": "Військо хрестоносців"
+        },
+        {
+          "stringValue": "Казино"
+        },
+        {
+          "stringValue": "Кіностудія"
+        },
+        {
+          "stringValue": "Корпоративна вечірка"
+        },
+        {
+          "stringValue": "Овочебаза"
+        },
+        {
+          "stringValue": "Океанський лайнер"
+        },
+        {
+          "stringValue": "Орбітальна станція"
+        },
+        {
+          "stringValue": "Готель"
+        },
+        {
+          "stringValue": "Партизанський загін"
+        },
+        {
+          "stringValue": "Пасажирський потяг"
+        },
+        {
+          "stringValue": "Піратський корабель"
+        },
+        {
+          "stringValue": "Пляж"
+        },
+        {
+          "stringValue": "Підводний човен"
+        },
+        {
+          "stringValue": "Поліцейський відділок"
+        },
+        {
+          "stringValue": "Полярна станція"
+        },
+        {
+          "stringValue": "Посольство"
+        },
+        {
+          "stringValue": "Ресторан"
+        },
+        {
+          "stringValue": "Літак"
+        },
+        {
+          "stringValue": "Спа салон"
+        },
+        {
+          "stringValue": "Станція тех. обслуговування"
+        },
+        {
+          "stringValue": "Супермаркет"
+        },
+        {
+          "stringValue": "Театр"
+        },
+        {
+          "stringValue": "Університет"
+        },
+        {
+          "stringValue": "Церква"
+        },
+        {
+          "stringValue": "Цирк"
+        },
+        {
+          "stringValue": "Школа"
+        },
+        {
+          "stringValue": "Будівельний майданчик"
+        },
+        {
+          "stringValue": "Метро"
+        },
+        {
+          "stringValue": "Парламент"
+        },
+        {
+          "stringValue": "Шоколадна фабрика"
+        },
+        {
+          "stringValue": "Кладовище"
+        },
+        {
+          "stringValue": "Стадіон"
+        },
+        {
+          "stringValue": "Музей"
+        },
+        {
+          "stringValue": "Будинок для людей похилого віку"
+        },
+        {
+          "stringValue": "Джаз група"
+        },
+        {
+          "stringValue": "Виноградник"
+        },
+        {
+          "stringValue": "Екскурсійий автобус"
+        },
+        {
+          "stringValue": "Рок концерт"
+        },
+        {
+          "stringValue": "Шахта"
+        },
+        {
+          "stringValue": "Порт"
+        },
+        {
+          "stringValue": "Автогонки"
+        },
+        {
+          "stringValue": "Весілля"
+        },
+        {
+          "stringValue": "Заправна станція"
+        },
+        {
+          "stringValue": "Бібліотека"
+        },
+        {
+          "stringValue": "В'язниця"
+        },
+        {
+          "stringValue": "Виставка котів"
+        },
+        {
+          "stringValue": "Карнавал"
+        },
+        {
+          "stringValue": "Виставка настільних ігор"
+        },
+        {
+          "stringValue": "Зоопарк"
+        },
+        {
+          "stringValue": "Лунапарк"
+        },
+        {
+          "stringValue": "Хокейна арена"
+        },
+        {
+          "stringValue": "Фестиваль хіппі"
+        },
+        {
+          "stringValue": "Коло друїдів"
+        },
+        {
+          "stringValue": "Караван"
+        },
+        {
+          "stringValue": "Човен вікінгів"
+        },
+        {
+          "stringValue": "Іспанська інквізиція"
+        },
+        {
+          "stringValue": "Печера неандертальців"
+        },
+        {
+          "stringValue": "Будівництво пірамід"
+        },
+        {
+          "stringValue": "Троянська війна"
+        },
+        {
+          "stringValue": "Табір повстанців"
+        },
+        {
+          "stringValue": "Древня олімпіада"
+        },
+        {
+          "stringValue": "Місячна станція"
+        },
+        {
+          "stringValue": "Загін Робін Гуда"
+        },
+        {
+          "stringValue": "Рицарський турнір"
+        },
+        {
+          "stringValue": "Монастир Шаолінь"
+        },
+        {
+          "stringValue": "Епідемія чорної смерті"
+        },
+        {
+          "stringValue": "Майстерня Леонардо"
+        },
+        {
+          "stringValue": "Острів людожерів"
+        },
+        {
+          "stringValue": "Турецький гарем"
+        },
+        {
+          "stringValue": "Школа ніндзя"
+        },
+        {
+          "stringValue": "Рота мушкетерів"
+        },
+        {
+          "stringValue": "Вігвам"
+        },
+        {
+          "stringValue": "Бородинська битва"
+        },
+        {
+          "stringValue": "Повітряна куля"
+        },
+        {
+          "stringValue": "Древньоримський сенат"
+        },
+        {
+          "stringValue": "Французька революція"
+        },
+        {
+          "stringValue": "Танковий бій"
+        },
+        {
+          "stringValue": "Салун"
+        },
+        {
+          "stringValue": "Табір золотошукачів"
+        },
+        {
+          "stringValue": "Підпільний бар"
+        },
+        {
+          "stringValue": "Дирижабль першої світової"
+        }
+      ]
+    }
+  }
+}

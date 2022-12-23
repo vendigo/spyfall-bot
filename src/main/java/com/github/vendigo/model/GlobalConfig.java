@@ -15,6 +15,5 @@ public record GlobalConfig(String newGame,
                            String rules,
                            String unknownError,
                            String cantStartChat,
-                           int locationsPerGame,
                            List<String> locations) {
 }

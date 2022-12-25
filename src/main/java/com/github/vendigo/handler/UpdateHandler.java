@@ -1,7 +1,6 @@
 package com.github.vendigo.handler;
 
 import com.github.vendigo.exception.GameFlowException;
-import com.github.vendigo.model.GlobalConfig;
 import com.github.vendigo.model.LocaleConfig;
 import com.github.vendigo.service.SpyfallGameService;
 import com.google.api.client.http.HttpStatusCodes;

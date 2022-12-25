@@ -1,7 +1,7 @@
 package com.github.vendigo.context;
 
 import com.github.vendigo.handler.UpdateHandler;
-import com.github.vendigo.model.GlobalConfig;
+import com.github.vendigo.model.GameLocale;
 import com.github.vendigo.model.LocaleConfig;
 import com.github.vendigo.service.DataStoreService;
 import com.github.vendigo.service.MessageSendingService;
@@ -25,11 +25,7 @@ public class AppContext {
 
 
     private LocaleConfig getLocaleConfig() {
-        GlobalConfig globalConfig = dataStoreService.getGlobalConfig();
-        if (locale.toUpperCase().equals("UA")) {
-            return globalConfig.messagesUa();
-        }
-
-        return globalConfig.messagesEn();
+        var gameLocale = locale.toUpperCase().equals("UA") ? GameLocale.UA : GameLocale.EN;
+        return dataStoreService.getConfig(gameLocale);
     }
 }

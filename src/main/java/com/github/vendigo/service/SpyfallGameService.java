@@ -16,7 +16,6 @@ import org.telegram.telegrambots.meta.api.objects.User;
 
 import com.github.vendigo.exception.GameFlowException;
 import com.github.vendigo.model.GameEntity;
-import com.github.vendigo.model.GlobalConfig;
 import com.google.cloud.Timestamp;
 
 import lombok.AllArgsConstructor;

@@ -2,7 +2,7 @@ package com.github.vendigo.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.vendigo.model.GameEntity;
-import com.github.vendigo.model.GlobalConfig;
+import com.github.vendigo.model.GameLocale;
 import com.github.vendigo.model.LocaleConfig;
 import com.google.cloud.datastore.*;
 import lombok.RequiredArgsConstructor;
@@ -29,16 +29,13 @@ public class DataStoreService {
     private final Datastore datastore;
 
     @SneakyThrows
-    public GlobalConfig getGlobalConfig() {
+    public LocaleConfig getConfig(GameLocale locale) {
         Key configKey = newKeyFactory()
                 .setKind(CONFIG_KIND)
                 .newKey("globalConfig");
         Entity e = datastore.get(configKey);
 
-        LocaleConfig messagesEn = objectMapper.readValue(e.getString("messagesEn"), LocaleConfig.class);
-        LocaleConfig messagesUa = objectMapper.readValue(e.getString("messagesUa"), LocaleConfig.class);
-
-        return new GlobalConfig(messagesEn, messagesUa);
+        return objectMapper.readValue(e.getString(locale.getMessagesField()), LocaleConfig.class);
     }
 
     public Optional<GameEntity> findGame(Long chatId) {
@@ -82,13 +79,6 @@ public class DataStoreService {
                 .set(PLAYERS, players)
                 .build();
         datastore.put(gameEntity);
-    }
-
-    private List<String> parseLocations(Entity entity) {
-        return entity.<Value<String>>getList("locations")
-                .stream()
-                .map(Value::get)
-                .toList();
     }
 
     private KeyFactory newKeyFactory() {

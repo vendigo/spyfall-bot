@@ -2,6 +2,7 @@ package com.github.vendigo.handler;
 
 import com.github.vendigo.exception.GameFlowException;
 import com.github.vendigo.model.GlobalConfig;
+import com.github.vendigo.model.LocaleConfig;
 import com.github.vendigo.service.SpyfallGameService;
 import com.google.api.client.http.HttpStatusCodes;
 import com.google.common.collect.ImmutableMap;
@@ -23,9 +24,9 @@ public class UpdateHandler {
 
     private final SpyfallGameService spyfallGameService;
     private final Map<String, Function<Message, String>> commandStrategies;
-    private final GlobalConfig config;
+    private final LocaleConfig config;
 
-    public UpdateHandler(SpyfallGameService spyfallGameService, GlobalConfig config) {
+    public UpdateHandler(SpyfallGameService spyfallGameService, LocaleConfig config) {
         this.spyfallGameService = spyfallGameService;
         this.config = config;
         this.commandStrategies = ImmutableMap

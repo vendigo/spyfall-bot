@@ -9,6 +9,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.github.vendigo.model.LocaleConfig;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.User;
@@ -33,7 +34,7 @@ public class SpyfallGameService {
     private static final long DEFAULT_GAME_ID = 1L;
     private static final String LIST_EL_TEMPLATE = "\uD83D\uDD38 %s\n";
 
-    private final GlobalConfig config;
+    private final LocaleConfig config;
     private final DataStoreService dataStoreService;
     private final MessageSendingService messageSendingService;
 

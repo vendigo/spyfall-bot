@@ -1,8 +1,6 @@
 package com.github.vendigo.function;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import com.github.vendigo.context.AppContext;
 import com.github.vendigo.handler.UpdateHandler;
 import com.google.cloud.functions.HttpFunction;
@@ -18,16 +16,14 @@ public class MainFunction implements HttpFunction {
     private final AppContext appContext = new AppContext();
     private final UpdateHandler updateHandler = appContext.getUpdateHandler();
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final ObjectReader requestReader = objectMapper.readerFor(Update.class);
-    private final ObjectWriter responseWriter = objectMapper.writer();
 
     @Override
     public void service(HttpRequest request, HttpResponse response) throws Exception {
-        Update update = requestReader.readValue(request.getReader());
+        Update update = objectMapper.readValue(request.getReader(), Update.class);
         BotApiMethod<?> answer = updateHandler.handleUpdate(update);
         response.setContentType("application/json");
         BufferedWriter writer = response.getWriter();
-        String responseJson = responseWriter.writeValueAsString(answer);
+        String responseJson = objectMapper.writeValueAsString(answer);
         writer.write(responseJson);
     }
 }

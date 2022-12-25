@@ -1,9 +1,12 @@
 package com.github.vendigo.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.vendigo.model.GameEntity;
 import com.github.vendigo.model.GlobalConfig;
+import com.github.vendigo.model.LocaleConfig;
 import com.google.cloud.datastore.*;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -11,7 +14,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class DataStoreService {
 
@@ -22,29 +25,20 @@ public class DataStoreService {
     private static final String GAME_STATE = "gameState";
     private static final String PLAYERS = "players";
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
     private final Datastore datastore;
 
+    @SneakyThrows
     public GlobalConfig getGlobalConfig() {
         Key configKey = newKeyFactory()
                 .setKind(CONFIG_KIND)
                 .newKey("globalConfig");
         Entity e = datastore.get(configKey);
 
-        return new GlobalConfig(
-                e.getString("newGame"),
-                e.getString("gameStarted"),
-                e.getString("howToUse"),
-                e.getString("howToUseGroup"),
-                e.getString("gameNotFound"),
-                e.getString("gameAlreadyStarted"),
-                e.getString("playerAdded"),
-                e.getString("playerLocation"),
-                e.getString("playerSpy"),
-                e.getString("notEnoughPlayers"),
-                e.getString("rules"),
-                e.getString("unknownError"),
-                e.getString("cantStartChat"),
-                parseLocations(e));
+        LocaleConfig messagesEn = objectMapper.readValue(e.getString("messagesEn"), LocaleConfig.class);
+        LocaleConfig messagesUa = objectMapper.readValue(e.getString("messagesUa"), LocaleConfig.class);
+
+        return new GlobalConfig(messagesEn, messagesUa);
     }
 
     public Optional<GameEntity> findGame(Long chatId) {
